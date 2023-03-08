@@ -23,7 +23,7 @@ public class MinesFinder extends JFrame{
     }
 
     private void btnSairActionPerformed(ActionEvent e) {
-                System.exit(0);
+        System.exit(0);
     }
 
     private void btnJogoFacilActionPerformed(ActionEvent e) {
