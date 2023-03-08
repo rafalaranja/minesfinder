@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class CampoMinado {
 
     private boolean[][] minas;
@@ -14,6 +16,7 @@ public class CampoMinado {
     private int nrColunas;      //a.k.a altura
     private int nrMinas;
 
+    private boolean primeiraJogada;  //indica se é ou não a primeira jogada
 
     //construtor
     public CampoMinado(int nrLinhas, int nrColunas, int nrMinas) {
@@ -23,6 +26,14 @@ public class CampoMinado {
 
         this.minas = new boolean[nrLinhas][nrColunas];      //valores começam a false
         this.estado = new int[nrLinhas][nrColunas];         //valores começam a 0
+
+        primeiraJogada = true;      //inicia o construtor considerando que é a primeira jogada
+
+        for (var x = 0; x < nrLinhas; ++x) {
+            for (var y = 0; y < nrColunas; ++y) {
+                estado[x][y] = TAPADO;
+            }
+        }
     }
 
     //determinar o estado de uma quadricula
@@ -43,6 +54,32 @@ public class CampoMinado {
     //obter o numero de colunas
     public int getNrColunas() {
         return nrColunas;
+    }
+
+    //revelar uma quadricula
+    public void revelarQuadricula(int x, int y) {
+        if (estado[x][y] < TAPADO) {
+            return;
+        }
+        if (primeiraJogada) {
+            primeiraJogada = false;
+            colocarMinas(x, y);
+        }
+
+    }
+
+    private void colocarMinas(int exceptoX, int exceptoY) {
+        var aleatorio = new Random();
+        var x = 0;
+        var y = 0;
+
+        for (var i = 0; i < nrMinas; ++i) {
+            do {
+                x = aleatorio.nextInt(nrLinhas);
+                y = aleatorio.nextInt(nrColunas);
+            } while (minas[x][y] || (x == exceptoX && y == exceptoY));
+            minas[x][y] = true;
+        }
     }
 }
 
